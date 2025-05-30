@@ -1,56 +1,29 @@
 # Define locals for organization and clarity
 locals {
-  ipam_pools = {
-    # Region 1 pools
-    region1 = {
-      arn = aws_vpc_ipam_pool.regional_pool_region1.arn
+  ipam_pools = merge(
+    # Regional pools
+    {
+      region1 = {
+        arn = aws_vpc_ipam_pool.regional_pool_region1.arn
+      }
+      region2 = {
+        arn = aws_vpc_ipam_pool.regional_pool_region2.arn
+      }
+    },
+    # Environment pools
+    {
+      for k, v in local.environment_pools : k => {
+        arn = v.arn
+      }
+    },
+    # All subnet pools dynamically
+    {
+      for k, v in local.subnet_pools : k => {
+        arn = v.arn
+      }
     }
-    region1_prod = {
-      arn = aws_vpc_ipam_pool.environment_pools_region1["prod"].arn
-    }
-    region1_nonprod = {
-      arn = aws_vpc_ipam_pool.environment_pools_region1["nonprod"].arn
-    }
-    # Region 1 subnet pools - prod
-    region1_prod_subnet1 = {
-      arn = aws_vpc_ipam_pool.subnet_pools_region1["prod-subnet1"].arn
-    }
-    region1_prod_subnet2 = {
-      arn = aws_vpc_ipam_pool.subnet_pools_region1["prod-subnet2"].arn
-    }
-    # Region 1 subnet pools - nonprod
-    region1_nonprod_subnet1 = {
-      arn = aws_vpc_ipam_pool.subnet_pools_region1["nonprod-subnet1"].arn
-    }
-    region1_nonprod_subnet2 = {
-      arn = aws_vpc_ipam_pool.subnet_pools_region1["nonprod-subnet2"].arn
-    }
-    
-    # Region 2 pools
-    region2 = {
-      arn = aws_vpc_ipam_pool.regional_pool_region2.arn
-    }
-    region2_prod = {
-      arn = aws_vpc_ipam_pool.environment_pools_region2["prod"].arn
-    }
-    region2_nonprod = {
-      arn = aws_vpc_ipam_pool.environment_pools_region2["nonprod"].arn
-    }
-    # Region 2 subnet pools - prod
-    region2_prod_subnet1 = {
-      arn = aws_vpc_ipam_pool.subnet_pools_region2["prod-subnet1"].arn
-    }
-    region2_prod_subnet2 = {
-      arn = aws_vpc_ipam_pool.subnet_pools_region2["prod-subnet2"].arn
-    }
-    # Region 2 subnet pools - nonprod
-    region2_nonprod_subnet1 = {
-      arn = aws_vpc_ipam_pool.subnet_pools_region2["nonprod-subnet1"].arn
-    }
-    region2_nonprod_subnet2 = {
-      arn = aws_vpc_ipam_pool.subnet_pools_region2["nonprod-subnet2"].arn
-    }
-  }
+  )
+
 }
 
 # Share IPAM with the account
