@@ -28,12 +28,12 @@ variable "environments" {
     "prod" = {
       cidr_suffix = "0.0/17"
       description = "Production Environment"
-      subnets     = 2
+      subnets     = 4
     }
     "nonprod" = {
       cidr_suffix = "128.0/17"
       description = "Non-Production Environment"
-      subnets     = 2
+      subnets     = 4
     }
   }
 }
