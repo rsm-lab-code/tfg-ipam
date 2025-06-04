@@ -23,7 +23,7 @@ variable "environments" {
     cidr_suffix = string
     description = string
     subnets     = number
-  }))
+  })
   default = {
     "prod" = {
       cidr_suffix = "0.0/17"
