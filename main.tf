@@ -195,7 +195,7 @@ locals {
       ]) : pair.key => aws_vpc_ipam_pool.subnet_pools_region2[pair.env_key]
     }
   )
-}
+
 }
 
 # Region 1 (us-west-2) subnet pool CIDRs
