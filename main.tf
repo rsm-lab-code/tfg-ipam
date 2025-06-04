@@ -146,7 +146,7 @@ resource "aws_vpc_ipam_pool" "subnet_pools_region1" {
   ipam_scope_id       = aws_vpc_ipam_scope.private_scope.id
   locale              = var.aws_regions[0]
   address_family      = "ipv4"
-  description         = "${var.aws_regions[0]} ${var.environments[each.value.env].description} Subnet ${each.value.num}"
+  description         = "${var.aws_regions[0]} ${var.environments[each.value.env].description} VPC ${each.value.num}"
   source_ipam_pool_id = aws_vpc_ipam_pool.environment_pools_region1[each.value.env].id
 }
 
@@ -169,7 +169,7 @@ resource "aws_vpc_ipam_pool" "subnet_pools_region2" {
   ipam_scope_id       = aws_vpc_ipam_scope.private_scope.id
   locale              = var.aws_regions[1]
   address_family      = "ipv4"
-  description         = "${var.aws_regions[1]} ${var.environments[each.value.env].description} Subnet ${each.value.num}"
+  description         = "${var.aws_regions[1]} ${var.environments[each.value.env].description} VPC ${each.value.num}"
   source_ipam_pool_id = aws_vpc_ipam_pool.environment_pools_region2[each.value.env].id
 }
 
