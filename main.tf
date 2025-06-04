@@ -180,4 +180,60 @@ locals {
         for env_name, env in var.environments : [
           for vpc_num in range(1, env.vpc + 1) : {
             key = "${var.aws_regions[0]}-${env_name}-subnet${vpc_num}"
-            env
+            env_key = "${env_name}-subnet${vpc_num}"
+          }
+        ]
+      ]) : pair.key => aws_vpc_ipam_pool.subnet_pools_region1[pair.env_key]
+    },
+    { for pair in flatten([
+        for env_name, env in var.environments : [
+          for vpc_num in range(1, env.vpc + 1) : {
+            key = "${var.aws_regions[1]}-${env_name}-subnet${vpc_num}"
+            env_key = "${env_name}-subnet${vpc_num}"
+          }
+        ]
+      ]) : pair.key => aws_vpc_ipam_pool.subnet_pools_region2[pair.env_key]
+    }
+  )
+}
+}
+
+# Region 1 (us-west-2) subnet pool CIDRs
+resource "aws_vpc_ipam_pool_cidr" "subnet_cidrs_region1" {
+  for_each = {
+    for pair in flatten([
+      for env_name, env in var.environments : [
+        for vpc_num in range(1, env.vpc + 1) : {
+          key     = "${env_name}-subnet${vpc_num}"
+          env     = env_name
+          num     = vpc_num
+        }
+      ]
+    ]) : pair.key => pair
+  }
+  
+  provider       = aws.delegated_account_us-west-2
+  ipam_pool_id   = aws_vpc_ipam_pool.subnet_pools_region1[each.key].id
+  netmask_length = 21
+  depends_on     = [aws_vpc_ipam_pool_cidr.environment_cidrs_region1]
+}
+
+# Region 2 (us-east-1) subnet pool CIDRs
+resource "aws_vpc_ipam_pool_cidr" "subnet_cidrs_region2" {
+  for_each = {
+    for pair in flatten([
+      for env_name, env in var.environments : [
+        for vpc_num in range(1, env.vpc + 1) : {
+          key     = "${env_name}-subnet${vpc_num}"
+          env     = env_name
+          num     = vpc_num
+        }
+      ]
+    ]) : pair.key => pair
+  }
+  
+  provider       = aws.delegated_account_us-west-2
+  ipam_pool_id   = aws_vpc_ipam_pool.subnet_pools_region2[each.key].id
+  netmask_length = 21
+  depends_on     = [aws_vpc_ipam_pool_cidr.environment_cidrs_region2]
+}

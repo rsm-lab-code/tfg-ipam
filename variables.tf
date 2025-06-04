@@ -22,7 +22,7 @@ variable "environments" {
   type = map(object({
     cidr_suffix = string
     description = string
-    subnets     = number
+    vpc     = number
   }))
   default = {
     "prod" = {
