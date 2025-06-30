@@ -124,6 +124,7 @@ resource "aws_vpc_ipam_pool_cidr" "environment_cidrs_region2" {
   depends_on   = [aws_vpc_ipam_pool_cidr.regional_cidr_region2]
 }
 
+/*
 # --------------------------
 # Create Subnet Pools for each Environment in each Region
 # --------------------------
@@ -237,3 +238,5 @@ resource "aws_vpc_ipam_pool_cidr" "subnet_cidrs_region2" {
   netmask_length = 21
   depends_on     = [aws_vpc_ipam_pool_cidr.environment_cidrs_region2]
 }
+
+*/

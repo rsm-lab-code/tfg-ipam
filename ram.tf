@@ -15,13 +15,15 @@ locals {
       for k, v in local.environment_pools : k => {
         arn = v.arn
       }
-    },
+    }
+/*
     # All subnet pools dynamically
     {
       for k, v in local.subnet_pools : k => {
         arn = v.arn
       }
     }
+*/
   )
 
 }

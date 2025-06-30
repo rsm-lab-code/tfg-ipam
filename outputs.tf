@@ -23,9 +23,11 @@ output "environment_pool_ids" {
   }
 }
 
+/*
 output "subnet_pool_ids" {
   description = "IDs of subnet pools"
   value       = {
     for k, v in local.subnet_pools : k => v.id
   }
 }
+*/
